@@ -15,7 +15,7 @@
 
 @synthesize receivedData;
 @synthesize delegate;
-
+@synthesize loadingAlertView;
 
 //initialize
 - (id) init
@@ -34,11 +34,11 @@
  */
 - (void)createConnection: (NSString *) username : (NSString *)password
 {
-    NSString* link = @"http://192.168.0.104:8888/include_php/loginData.php";
+    NSString* link = [NSString stringWithFormat:@"%@%@", [WTTSingleton sharedManager].serverURL, @"/include_php/loginData.php"];
     NSMutableURLRequest *theRequest=[NSMutableURLRequest
                                      requestWithURL:[NSURL URLWithString: link]
                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                     timeoutInterval:60.0];
+                                     timeoutInterval:15.0];
     
     NSString *myParameters = [NSString stringWithFormat: @"username=%@ & password=%@",
                               username, password];
@@ -52,8 +52,11 @@
      * nil. If the connection is successful, an instance of NSMutableData is created to store the data
      * that is provided to the delegate incrementally.
      */
-    NSURLConnection * theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
-    if (theConnection) {
+   
+    //if the connection is still being connected after 1 second, load the indicator
+    NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self startImmediately:YES];
+    [self displayLoadingAlertView];
+    if (connection) {
         
         // Create the NSMutableData to hold the received data.
         // receivedData is an instance variable declared elsewhere.
@@ -62,16 +65,36 @@
     } else
     {
         // Inform the user that the connection failed.
-        NSLog(@"Connection Failed!");
-        
+        NSLog(@"Connection Failed!");        
     }
+
+    
     theRequest = nil;
     myParameters = nil;
     link = nil;
-    theConnection = nil;
+    connection = nil;
 }
 
+- (void) displayLoadingAlertView
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    loadingAlertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Please Wait..." delegate:nil cancelButtonTitle:nil otherButtonTitles:nil];
+    
+    UIActivityIndicatorView *progress= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(125, 50, 30, 30)];
+    progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    [loadingAlertView addSubview:progress];
+    [progress startAnimating];
+    [loadingAlertView show];
+    progress = nil;
+    
+}
 
+- (void) dismissLoadingAlertView
+{
+   [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+   [loadingAlertView dismissWithClickedButtonIndex:0 animated:YES];
+   loadingAlertView = nil;
+}
 /*
  * This message can be sent due to server redirects, or in rare cases multi-part MIME documents.
  * Each time the delegate receives the connection:didReceiveResponse: message, it should reset and
@@ -120,6 +143,7 @@
     //      [error localizedDescription],
     //      [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
     
+    [self dismissLoadingAlertView];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
                                                     message:@"Could not connect to server! Check Your Network Connection" delegate:nil
                                           cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -145,19 +169,65 @@
     // release the connection, and the data object
     connection = nil;
     receivedData = nil;
+    [self dismissLoadingAlertView];
     
     if([result caseInsensitiveCompare:@"failed"] == NSOrderedSame)
     {
         result = nil;
+        jsonObject = nil;
         [[self delegate] isLogInSuccessful:NO];
     }
     
     
     else if([result caseInsensitiveCompare:@"passed"] == NSOrderedSame)
     {
-        result = nil;
+        NSString * name = nil;
+        NSString * email = nil;
+        NSString * school = nil;
+        NSString * major = nil;
+        UIImage  * image = nil;
+        
+        
+        if ([jsonObject objectForKey:@"userFirstName"] != [NSNull null] && [jsonObject objectForKey:@"userLastName" ] != [NSNull null])
+        {
+            name = [NSString stringWithFormat:@"%@ %@", [jsonObject objectForKey:@"userFirstName"], [jsonObject objectForKey:@"userLastName"]];
+        
+            if ([name isEqualToString:@" "])
+                name = nil;
+        }
+        
+        if ([jsonObject objectForKey:@"userEmail"] != [NSNull null])
+            email = [jsonObject objectForKey:@"userEmail"];
+        
+        if ([jsonObject objectForKey:@"userSchool"] != [NSNull null])
+            school = [jsonObject objectForKey:@"userSchool"];
+
+        if ([jsonObject objectForKey:@"userMajor"] != [NSNull null])
+            major = [jsonObject objectForKey:@"userMajor"];
+        
+    
+        
+        if ([jsonObject objectForKey:@"userProfileImgSrc"] != [NSNull null])
+        {
+            NSError * err = nil;
+            NSString * imageURL = [NSString stringWithFormat:@"%@%@", [WTTSingleton sharedManager].serverURL, [jsonObject objectForKey:@"userProfileImgSrc"]];
+            
+            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString: imageURL] options:NSDataReadingUncached error:&err];
+            if(err)
+            {
+                NSLog(@"ERROR IN LOGIN CONNECTION  %@", err);
+                return;
+            }                                                        
+            image = [UIImage imageWithData:data];
+            imageURL = nil;
+        }
+        
+        [[WTTSingleton sharedManager].userprofile setUserProfile:image setUserName:name setEmail:email setSchool:school setMajor:major];
+        jsonObject = nil;
+         
         [[self delegate] isLogInSuccessful:YES];
     }
+    
 }
 
 /*
@@ -179,7 +249,11 @@
         NSLog(@"%@", error);
         result = @"failed";
     }
-    else result =  (NSString*)[json objectForKey:@"login"];
+    else
+    {
+        result =  (NSString*)[json objectForKey:@"login"];
+        jsonObject= [json objectForKey:@"userProfile"];
+    }
     
     json = nil;
     error = nil;

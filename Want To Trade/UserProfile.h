@@ -16,4 +16,14 @@
 @property (nonatomic, retain) NSString * school;
 @property (nonatomic, retain) NSString * major;
 
+/*
+ * method to set user profile
+ * @param img : UIImage for profile photo
+ * @param usrname: NSString username
+ * @param em: the email
+ * @param sch: the school
+ * @param mj: the major
+ */
+- (void) setUserProfile : (UIImage *) img setUserName : (NSString *) usrname  setEmail: (NSString*) em setSchool: (NSString *) sch setMajor : (NSString *)mj;
+
 @end

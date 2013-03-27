@@ -8,6 +8,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "WTTSingleton.h"
+#import "UserProfile.h"
 
 /*
  * create protocol for delegation
@@ -32,16 +34,31 @@
 @end
 
 @interface LoginConnection : NSObject
+{
+    NSMutableDictionary * jsonObject;
+}
 
-@property (nonatomic, retain) id <ProcessAfterLogin> delegate;
+@property (nonatomic,retain) id <ProcessAfterLogin> delegate;
 @property (nonatomic,retain) NSMutableData *receivedData;
+@property (nonatomic,retain) UIAlertView *loadingAlertView;
 
 /*
- * method to create Connection.
+ * method to connect to database to login
  * @param username is the username to login
  * @param password is the password to login
  */
 - (void) createConnection : (NSString*)username :(NSString*)password;
+
+/*
+ * display the loading AlertView
+ */
+- (void) displayLoadingAlertView;
+
+/*
+ * dimiss the loading alerView
+ */
+- (void) dismissLoadingAlertView;
+
 
 /*
  * This function is to parse JSON object get back from php

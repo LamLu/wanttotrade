@@ -37,4 +37,18 @@
     }
     return self;
 }
+
+- (void) setUserProfile : (UIImage *) img setUserName : (NSString *) usrname  setEmail: (NSString*) em setSchool: (NSString *) sch setMajor : (NSString *)mj
+{
+    self.userimg = img;
+    self.username = usrname;
+    self.email = em;
+    self.school = sch;
+    self.major = mj;
+    img = nil;
+    usrname = nil;
+    em = nil;
+    sch = nil;
+    mj = nil;
+}
 @end

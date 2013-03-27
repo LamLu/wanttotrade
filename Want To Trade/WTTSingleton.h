@@ -21,11 +21,27 @@
 //userprofile property
 @property (nonatomic, retain) UserProfile * userprofile;
 
+//the URL to the user that contains php, userProfile images...
+@property (nonatomic, retain) NSString * serverURL;
+
+
+
 // method to return this Singleton
 + (WTTSingleton *) sharedManager;
 
-// method to store username and password into keychain
-// @param: username the username to be stored
+// method to store email and password into keychain
+// keychain is used to store email and password only
+// @param: email the email to be stored
 // @password: the password to be stored
-- (void) storeUserCredentials : (NSString *) username  storePassword: (NSString *) password;
+- (void) storeUserCredentials : (NSString *) email  storePassword: (NSString *) password;
+
+/*
+ * method to store user profile into NSUserDefault
+ * @param img: the default img
+ * @param name: the default name
+ * @param em: the default email
+ * @param sch: the default school
+ * @param mj: the default major
+ */
+- (void) storeDefaultUserProfile: (UIImage *) img defaultName: (NSString *) name defaultEmail : (NSString *) em defaultSchool: (NSString *) sch defaultMajor: (NSString *) mj;
 @end

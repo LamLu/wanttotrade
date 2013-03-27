@@ -89,6 +89,7 @@
 		71FBA3FD15B2348D005F932D /* UploadSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FBA3FC15B2348D005F932D /* UploadSuccessViewController.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		71FD1DF515AFDB5D001E64F6 /* WishListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD1DF415AFDB5D001E64F6 /* WishListCell.m */; };
 		71FD1DFB15AFE590001E64F6 /* Book.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD1DFA15AFE590001E64F6 /* Book.m */; };
+		FF6BE9981701B21C000A13E8 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6BE9971701B21C000A13E8 /* UserProfileViewController.m */; };
 		FF71668116FC430600BEF7CB /* WTTSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF71668016FC430600BEF7CB /* WTTSingleton.m */; };
 		FF8376C916B6698000B0D076 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8376C816B6698000B0D076 /* libfacebook_ios_sdk.a */; };
 		FFAD321816FD1BAA009964A2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFAD321716FD1BAA009964A2 /* Security.framework */; };
@@ -254,6 +255,8 @@
 		71FD1DF415AFDB5D001E64F6 /* WishListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListCell.m; sourceTree = "<group>"; };
 		71FD1DF915AFE590001E64F6 /* Book.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Book.h; sourceTree = "<group>"; };
 		71FD1DFA15AFE590001E64F6 /* Book.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Book.m; sourceTree = "<group>"; };
+		FF6BE9961701B21C000A13E8 /* UserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileViewController.h; sourceTree = "<group>"; };
+		FF6BE9971701B21C000A13E8 /* UserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileViewController.m; sourceTree = "<group>"; };
 		FF71667F16FC430600BEF7CB /* WTTSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WTTSingleton.h; sourceTree = "<group>"; };
 		FF71668016FC430600BEF7CB /* WTTSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WTTSingleton.m; sourceTree = "<group>"; };
 		FF8376C816B6698000B0D076 /* libfacebook_ios_sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfacebook_ios_sdk.a; sourceTree = "<group>"; };
@@ -599,6 +602,8 @@
 				71E92B8815BF5B8B00E1FB5B /* CompletedTradeViewController.m */,
 				71E92B8A15BF5D0600E1FB5B /* EditDetailViewController.h */,
 				71E92B8B15BF5D0600E1FB5B /* EditDetailViewController.m */,
+				FF6BE9961701B21C000A13E8 /* UserProfileViewController.h */,
+				FF6BE9971701B21C000A13E8 /* UserProfileViewController.m */,
 			);
 			name = "Profile View Classes/Controllers";
 			sourceTree = "<group>";
@@ -789,6 +794,7 @@
 				FF71668116FC430600BEF7CB /* WTTSingleton.m in Sources */,
 				FFAD321B16FD205A009964A2 /* KeychainItemWrapper.m in Sources */,
 				FFAD321E16FD2901009964A2 /* UserProfile.m in Sources */,
+				FF6BE9981701B21C000A13E8 /* UserProfileViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -31,7 +31,8 @@
  */
 - (void)createConnection: (NSString *) username : (NSString *)password
 {
-    NSString* link = @"http://192.168.0.104:8888/include_php/registerData.php";
+    NSString* link = [NSString stringWithFormat:@"%@%@", [WTTSingleton sharedManager].serverURL,
+                      @"/include_php/registerData.php"];
     NSMutableURLRequest *theRequest=[NSMutableURLRequest
                                      requestWithURL:[NSURL URLWithString: link]
                                      cachePolicy:NSURLRequestUseProtocolCachePolicy

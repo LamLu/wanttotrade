@@ -69,9 +69,7 @@
     //if sucesslogin
     else if ([[segue identifier] isEqualToString:@"LoginSuccess"])
     {
-        HomeViewController *hvc = [segue destinationViewController];
-        hvc.navigationItem.hidesBackButton = YES;
-        hvc = nil;
+        
     }
     else if ([[segue identifier] isEqualToString:@"SignUpDoneSegue"]) {
         

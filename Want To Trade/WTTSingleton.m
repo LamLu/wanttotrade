@@ -10,7 +10,10 @@
 
 @implementation WTTSingleton
 @synthesize isLogin;
-@synthesize  keychainItem;
+@synthesize keychainItem;
+@synthesize userprofile;
+@synthesize serverURL;
+
 
 #pragma mark Singleton Methods
 
@@ -22,20 +25,32 @@
         sharedInstance = [[WTTSingleton alloc] init];
         sharedInstance.isLogin = NO;
         sharedInstance.keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"WTTLoginData" accessGroup:nil];
-        
         sharedInstance.userprofile = [[UserProfile alloc] init];
+        sharedInstance.serverURL = @"http://192.168.1.139:8888";
+        
     });
     
     return sharedInstance;
 }
 
-- (void) storeUserCredentials : (NSString *) username storePassword: (NSString *) password
+- (void) storeUserCredentials : (NSString *) email storePassword: (NSString *) password
 {
     [[WTTSingleton sharedManager].keychainItem resetKeychainItem];
-    
-    [keychainItem setObject:username forKey:(__bridge id)kSecAttrAccount];
+    [keychainItem setObject:email forKey:(__bridge id)kSecAttrAccount];
     [keychainItem setObject:password forKey:(__bridge id)kSecValueData];
-    self.userprofile.email = username;
+    email = nil;
+    password = nil;
  
+}
+
+- (void) storeDefaultUserProfile: (UIImage *) img defaultName: (NSString *) name defaultEmail : (NSString *) em defaultSchool: (NSString *) sch defaultMajor: (NSString *) mj
+{
+    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+    [userDefault setObject:img forKey:@"userImage"];
+    [userDefault setObject:name forKey:@"userName"];
+    [userDefault setObject:em forKey:@"userEmail"];
+    [userDefault setObject:sch forKey:@"userSchool"];
+    [userDefault setObject:mj forKey:@"userMajor"];
+    [userDefault synchronize];
 }
 @end

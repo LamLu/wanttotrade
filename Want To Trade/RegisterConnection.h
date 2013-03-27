@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "WTTSingleton.h"
 /*
  * create protocol for delegation
  * after create and process the connection and register,
